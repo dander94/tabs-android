@@ -1,4 +1,4 @@
-package com.example.tabsproj.ui.views
+package com.example.tabsproj.ui.screens.welcome
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,30 +12,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tabsproj.navigation.AppRoutes
 import com.example.tabsproj.navigation.replace
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-
-private lateinit var auth: FirebaseAuth
 
 @Composable
-fun Welcome (navController: NavController) {
-    auth = Firebase.auth
-    val user = auth.currentUser
-
+fun WelcomeScreen (
+    navController: NavController,
+    viewModel: WelcomeViewModel = hiltViewModel()
+) {
     // Functions
     fun onLogout () {
-        auth.signOut()
-        return navController.replace(AppRoutes.LOGIN.route)
+        viewModel.signOut()
+        navController.replace(AppRoutes.LOGIN.route)
     }
 
     // Nav Guards
-    LaunchedEffect(user) {
-        if (user == null) {
+    LaunchedEffect(viewModel.currentUser) {
+        if (viewModel.currentUser == null) {
             navController.replace(AppRoutes.LOGIN.route)
         }
     }
@@ -66,5 +62,8 @@ fun Welcome (navController: NavController) {
 @Preview
 @Composable
 fun PreviewWelcome () {
-    Welcome(rememberNavController())
+    WelcomeScreen(
+        rememberNavController(),
+        hiltViewModel(),
+    )
 }

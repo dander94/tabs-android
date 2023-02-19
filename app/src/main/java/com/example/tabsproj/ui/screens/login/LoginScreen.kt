@@ -1,4 +1,4 @@
-package com.example.tabsproj.ui.views
+package com.example.tabsproj.ui.screens.login
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -16,40 +16,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tabsproj.navigation.AppRoutes
 import com.example.tabsproj.navigation.replace
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
-
-private lateinit var auth: FirebaseAuth
 
 @Composable
-fun Login(navController: NavController) {
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
-
-    // Init FBase auth
-    auth = Firebase.auth
 
     // Login Functions
     fun loginAnon () {
-        auth.signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    navController.replace(AppRoutes.HOME.route)
-                } else {
-                    Toast
-                        .makeText(
-                            context,
-                            "Something went wrong :(",
-                            Toast.LENGTH_SHORT
-                        )
-                        .show()
-                }
+        viewModel.signInAnonymously (
+            {
+                navController.replace(AppRoutes.HOME.route)
+            },
+            {
+                Toast
+                    .makeText(
+                        context,
+                        "Something went wrong :(",
+                        Toast.LENGTH_SHORT
+                    )
+                    .show()
             }
+        )
     }
 
     fun loginGoogle () {
@@ -57,8 +54,8 @@ fun Login(navController: NavController) {
     }
 
     // Nav Guards
-    LaunchedEffect(auth.currentUser) {
-        if (auth.currentUser != null) {
+    LaunchedEffect(viewModel.currentUser) {
+        if (viewModel.currentUser != null) {
             navController.replace(AppRoutes.HOME.route)
         }
     }
@@ -111,5 +108,5 @@ fun Login(navController: NavController) {
 @Preview
 @Composable
 fun PreviewLogin () {
-    Login(rememberNavController())
+    LoginScreen(rememberNavController())
 }

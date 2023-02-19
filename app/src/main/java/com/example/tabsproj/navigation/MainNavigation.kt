@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.tabsproj.ui.views.Login
-import com.example.tabsproj.ui.views.Welcome
+import com.example.tabsproj.ui.screens.welcome.WelcomeScreen
+import com.example.tabsproj.ui.screens.login.LoginScreen
 
 enum class AppRoutes(val route: String) {
     HOME("home"),
@@ -26,10 +26,10 @@ private fun MainNavigationGraph (controller: NavHostController) {
         startDestination = AppRoutes.HOME.route
     ) {
         composable(AppRoutes.HOME.route) {
-            Welcome(controller)
+            WelcomeScreen(controller)
         }
         composable(AppRoutes.LOGIN.route) {
-            Login(controller)
+            LoginScreen(controller)
         }
     }
 }
