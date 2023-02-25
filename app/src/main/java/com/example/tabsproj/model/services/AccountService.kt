@@ -9,6 +9,5 @@ interface AccountService {
     suspend fun isAnonymous (): Boolean
     suspend fun linkAccount ()
     suspend fun signUpAnonymous (): AuthResult
-    suspend fun signInGoogle ()
     fun signOut ()
 }

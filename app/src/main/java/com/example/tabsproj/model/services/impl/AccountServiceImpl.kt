@@ -23,10 +23,6 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth): Ac
        return auth.signInAnonymously().await()
     }
 
-    override suspend fun signInGoogle() {
-        TODO("Not yet implemented")
-    }
-
     override fun signOut() {
         return auth.signOut()
     }
